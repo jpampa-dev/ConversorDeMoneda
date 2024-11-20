@@ -1,4 +1,4 @@
-# [Conversor de Monedas](#Título-e-imagen-de-portada)
+# Conversor de Monedas
 
 <p align="right">
     <img src="https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green" alt="Docusaurus"/>
