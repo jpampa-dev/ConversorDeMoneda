@@ -1,17 +1,25 @@
-package main.java;
+package com.alura.conversordemoneda.controller;
+
+import com.alura.conversordemoneda.config.Config;
+import com.alura.conversordemoneda.service.CurrencyConverterService;
+import com.alura.conversordemoneda.service.ExchangeRateService;
 
 import java.util.Scanner;
 
-public class App {
-    public static void main(String[] args) {
+public class MainController {
+
+    private CurrencyConverterService converterService;
+
+    public void init() {
+
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=== Conversor de Moneda ===");
 
         try {
-            // Configuración
-            Config config = new Config();
-            CurrencyService currencyService = new CurrencyService(config.getApiKey());
-            CurrencyConverter converter = new CurrencyConverter(currencyService);
+            Config apiConfig = new Config();
+            ExchangeRateService exchangeRateService = new ExchangeRateService(apiConfig);
+            converterService = new CurrencyConverterService(exchangeRateService);
+
+            System.out.println("=== Conversor de Moneda ===");
 
             int active = 1;
 
@@ -74,10 +82,10 @@ public class App {
                 }
 
                 // Validar opciones
-                if(!(option > 0 && option < 8)) continue;
+                if (!(option > 0 && option < 8)) continue;
 
                 // Validar si el estado es activo
-                if(active == 0) continue;
+                if (active == 0) continue;
 
                 // Amount
                 double amount = 0;
@@ -94,12 +102,10 @@ public class App {
                     }
                 }
 
-
                 // Realizar conversión
-                double result = converter.convert(fromCurrencyCode, toCurrencyCode, amount);
+                double result = converterService.convert(amount, fromCurrencyCode, toCurrencyCode);
                 // Con salto de linea
                 System.out.println("Resultado: " + result + "\n\n\n");
-
 
             }
         } catch (Exception e) {
@@ -107,5 +113,7 @@ public class App {
         } finally {
             scanner.close();
         }
+
     }
+
 }
